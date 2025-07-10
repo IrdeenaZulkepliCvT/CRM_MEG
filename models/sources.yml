@@ -1,0 +1,11 @@
+version: 2
+sources:
+ - name: fivetran
+   database: CRM_MEG_UAT_DB
+   schema: crm_meg_uat
+   tables:
+     - name: contact
+     - name: elogic_medicalcondition
+     - name: elogic_usedproduct
+     - name: product
+     - name: stringmap
