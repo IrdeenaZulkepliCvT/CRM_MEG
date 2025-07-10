@@ -1,0 +1,14 @@
+CRM_MEG:
+ target: uat
+ outputs:
+   uat:
+     type: snowflake
+     account: "VMBDWRA-RC55685"
+     user: "SRV_CVT_OKT_SSO_POWERBI_01"
+     password: "%4j2t9@vN$UMxRc2"
+     role: "CRM_MEG_UAT_CONTRIBUTOR_ROLE"
+     database: "CRM_MEG_UAT_DB"
+     warehouse: "CRM_MEG_UAT_CONTRIBUTOR_WH"
+     schema: "CRM_MEG_UAT"
+     threads: 4
+     client_session_keep_alive: False
