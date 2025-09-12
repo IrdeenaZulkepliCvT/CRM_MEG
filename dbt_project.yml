@@ -1,7 +1,7 @@
-name: CRM_MEG
+name: CRM_MEG_PRD
 version: '1.0'
 config-version: 2
-profile: CRM_MEG
+profile: default
 model-paths: ["models"]
 target-path: "target"
 clean-targets:
