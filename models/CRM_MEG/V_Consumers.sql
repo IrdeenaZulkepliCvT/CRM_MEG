@@ -24,6 +24,10 @@ caretype as (
     where attributename = 'ntt_consumertype' and objecttypecode ='contact' and langid = 1033
 )
 
+,megjourney as (
+    select _BPF_CONTACTID_VALUE, ACTIVESTAGESTARTEDON, BPF_DURATION 
+    from {{ source('CRM_MEG_PRD', 'NTT_MEGCONSUMERJOURNEY') }}
+)
 ,source_data as (
 
     SELECT
@@ -38,6 +42,8 @@ caretype as (
         ELOGIC_DATE_OF_FIRST_SURGERY,
         c.CREATEDON,
         c.MODIFIEDON,
+        megj.ACTIVESTAGESTARTEDON as Active_Stage_Started_On,
+        megj.BPF_DURATION as Bpf_Duration,
         crt.FULLNAME AS CREATEDBY,
         bu.NAME as OWNINGBUSINESSUNIT,
         c.ELOGIC_AGE,
@@ -58,6 +64,8 @@ caretype as (
     ON c.ELOGIC_CONTACTUSERGEOGRAPHY = geo.ATTRIBUTEVALUE
     LEFT JOIN consumertype contype
     ON c.NTT_CONSUMERTYPE = contype.ATTRIBUTEVALUE
+    LEFT JOIN megjourney megj 
+    ON c.CONTACTID = megj._BPF_CONTACTID_VALUE
     WHERE
         c.statecode = 0  
 )
