@@ -129,7 +129,7 @@ systemuser as (
         ON ctc.NTT_CONSUMERTYPE = contype.ATTRIBUTEVALUE
         WHERE
         eup.statecode = 0    
-        and eup.elogic_used_products_user_geography = '961080006'
+        and eup.elogic_used_products_user_geography = '851750006'
 )
 
 select *
