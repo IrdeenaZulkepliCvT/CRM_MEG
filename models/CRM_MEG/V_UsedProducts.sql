@@ -71,7 +71,7 @@ systemuser as (
         cond.ELOGIC_NAME as medicalcondition_elogic_name, -- ntt_condition
         exman.elogic_name as ntt_existingproductmanufacturer,  
         eup.ntt_confirmeddate,
-        sys.FULLNAME as ntt_confirmeduser, -- ntt_confirmeduser,
+        --sys.FULLNAME as ntt_confirmeduser, -- ntt_confirmeduser,
         eup.elogic_date_stop,
         eup.createdon as createdon,
         crt.FULLNAME as createdby,
@@ -89,9 +89,9 @@ systemuser as (
         contype.val as Consumer_Type,
         eup.MODIFIEDON as ModifiedOn_Date
         FROM {{ source('CRM_MEG_PRD', 'elogic_usedproduct') }} eup
-        inner JOIN product p1
+        left JOIN product p1
         ON p1.PRODUCTID = eup._ELOGIC_PRODUCT_VALUE
-        inner JOIN product p2
+        left JOIN product p2
         ON p2.PRODUCTID = eup._NTT_CURRENTPRODUCTNAME_VALUE
         LEFT JOIN {{ source('CRM_MEG_PRD', 'elogic_manufacturers') }} man
         ON eup._NTT_MANUFACTURER_VALUE = man.ELOGIC_MANUFACTURERSID
@@ -101,8 +101,8 @@ systemuser as (
         ON eup._ELOGIC_CONTACT_VALUE = ctc.CONTACTID
         LEFT JOIN {{ source('CRM_MEG_PRD', 'elogic_medicalcondition') }}  cond
         ON ctc.CONTACTID = cond._ELOGIC_END_USER_VALUE
-        inner JOIN systemuser sys
-        ON eup._NTT_CONFIRMEDUSER_VALUE = sys.OWNERID
+        -- left JOIN systemuser sys
+        -- ON eup._NTT_CONFIRMEDUSER_VALUE = sys.OWNERID
         inner JOIN systemuser crt
         ON eup._CREATEDBY_VALUE = crt.OWNERID
         LEFT JOIN {{ source('CRM_MEG_PRD', 'contact') }} nurse
@@ -121,7 +121,7 @@ systemuser as (
         ON cond.NTT_CAREPROFILECONTINENCECARE = cpcontinencecare.ATTRIBUTEVALUE
         LEFT JOIN elogic_systemtype stype 
         ON p1.ELOGIC_SYSTEM_TYPE = stype.ATTRIBUTEVALUE
-        inner JOIN usergeo geo
+        left JOIN usergeo geo
         ON ctc.ELOGIC_CONTACTUSERGEOGRAPHY = geo.ATTRIBUTEVALUE
         LEFT JOIN changereason chg
         ON eup.NTT_REASONFORCHANGE = chg.ATTRIBUTEVALUE
