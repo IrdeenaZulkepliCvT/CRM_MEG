@@ -89,27 +89,27 @@ systemuser as (
         contype.val as Consumer_Type,
         eup.MODIFIEDON as ModifiedOn_Date
         FROM {{ source('CRM_MEG_PRD', 'elogic_usedproduct') }} eup
-        LEFT JOIN product p1
+        inner JOIN product p1
         ON p1.PRODUCTID = eup._ELOGIC_PRODUCT_VALUE
-        LEFT JOIN product p2
+        inner JOIN product p2
         ON p2.PRODUCTID = eup._NTT_CURRENTPRODUCTNAME_VALUE
         LEFT JOIN {{ source('CRM_MEG_PRD', 'elogic_manufacturers') }} man
         ON eup._NTT_MANUFACTURER_VALUE = man.ELOGIC_MANUFACTURERSID
         LEFT JOIN {{ source('CRM_MEG_PRD', 'elogic_manufacturers') }} exman
         ON eup._NTT_EXISTINGPRODUCTMANUFACTURER_VALUE = exman.ELOGIC_MANUFACTURERSID
-        LEFT JOIN {{ source('CRM_MEG_PRD', 'contact') }} ctc
+        inner JOIN {{ source('CRM_MEG_PRD', 'contact') }} ctc
         ON eup._ELOGIC_CONTACT_VALUE = ctc.CONTACTID
         LEFT JOIN {{ source('CRM_MEG_PRD', 'elogic_medicalcondition') }}  cond
         ON ctc.CONTACTID = cond._ELOGIC_END_USER_VALUE
-        LEFT JOIN systemuser sys
+        inner JOIN systemuser sys
         ON eup._NTT_CONFIRMEDUSER_VALUE = sys.OWNERID
-        LEFT JOIN systemuser crt
+        inner JOIN systemuser crt
         ON eup._CREATEDBY_VALUE = crt.OWNERID
         LEFT JOIN {{ source('CRM_MEG_PRD', 'contact') }} nurse
         ON cond._NTT_NURSENAME_VALUE = nurse.CONTACTID
         LEFT JOIN {{ source('CRM_MEG_PRD', 'ELOGIC_PRODUCTTYPE') }} producttype
         ON p1._ELOGIC_PRODUCT_TYPEID_VALUE = producttype.ELOGIC_PRODUCTTYPEID
-        LEFT JOIN productusagestatus stat
+        inner JOIN productusagestatus stat
         ON eup.ntt_productusagestatus = stat.ATTRIBUTEVALUE
         LEFT JOIN outcome out 
         ON eup.ntt_outcome = out.ATTRIBUTEVALUE
@@ -121,15 +121,14 @@ systemuser as (
         ON cond.NTT_CAREPROFILECONTINENCECARE = cpcontinencecare.ATTRIBUTEVALUE
         LEFT JOIN elogic_systemtype stype 
         ON p1.ELOGIC_SYSTEM_TYPE = stype.ATTRIBUTEVALUE
-        LEFT JOIN usergeo geo
+        inner JOIN usergeo geo
         ON ctc.ELOGIC_CONTACTUSERGEOGRAPHY = geo.ATTRIBUTEVALUE
         LEFT JOIN changereason chg
         ON eup.NTT_REASONFORCHANGE = chg.ATTRIBUTEVALUE
-        LEFT JOIN consumertype contype
+        inner JOIN consumertype contype
         ON ctc.NTT_CONSUMERTYPE = contype.ATTRIBUTEVALUE
         WHERE
-        eup.statecode = 0    
-        and eup.elogic_used_products_user_geography in  ('961080006', '851750006')
+        eup._fivetran_deleted = 'FALSE'
 )
 
 select *
