@@ -43,21 +43,20 @@ caretype as (
         acc.NAME as ACCOUNT,
         geo.val as Country
     FROM {{ source('CRM_MEG_PRD', 'contact') }} c
-    LEFT JOIN {{ source('CRM_MEG_PRD', 'SYSTEMUSER') }} crt
+    INNER JOIN {{ source('CRM_MEG_PRD', 'SYSTEMUSER') }} crt
     ON c._CREATEDBY_VALUE = crt.OWNERID
-    left join caretype care
+    LEFT join caretype care
     ON c.NTT_CARETYPE = care.ATTRIBUTEVALUE
-    left join enrolsourse es
+    LEFT join enrolsourse es
     ON c.NTT_MEENROLMENTSOURCE = es.ATTRIBUTEVALUE
-    left join businessunit bu
+    inner join businessunit bu
     ON c._OWNINGBUSINESSUNIT_VALUE = bu.BUSINESSUNITID
     LEFT JOIN account acc
     ON c._ELOGIC_ACCOUNT_VALUE = acc.accountid
-    LEFT JOIN usergeo geo
+    inner JOIN usergeo geo
     ON c.ELOGIC_CONTACTUSERGEOGRAPHY = geo.ATTRIBUTEVALUE
-    LEFT JOIN consumertype contype
+    inner JOIN consumertype contype
     ON c.NTT_CONSUMERTYPE = contype.ATTRIBUTEVALUE
-    WHERE
-        c.statecode = 0  
+    WHERE c._fivetran_deleted = 'FALSE'
 )
 select * from source_data
