@@ -15,3 +15,33 @@ sources:
      - name: ELOGIC_PRODUCTTYPE
      - name: BUSINESSUNIT
      - name: NTT_MEGCONSUMERJOURNEY
+ - name: CRM_MEG_APAC
+   database: CRM_MEG_PRD_DB
+   schema: crm_meg_apac_prd
+   tables:
+     - name: contact
+     - name: elogic_medicalcondition
+     - name: elogic_usedproduct
+     - name: product
+     - name: stringmap
+     - name: elogic_manufacturers
+     - name: SYSTEMUSER
+     - name: ACCOUNT
+     - name: ELOGIC_PRODUCTTYPE
+     - name: BUSINESSUNIT
+     - name: NTT_MEGCONSUMERJOURNEY
+ - name: CRM_MEG_EMEA
+   database: CRM_MEG_PRD_DB
+   schema: crm_meg_emea_prd
+   tables:
+     - name: contact
+     - name: elogic_medicalcondition
+     - name: elogic_usedproduct
+     - name: product
+     - name: stringmap
+     - name: elogic_manufacturers
+     - name: SYSTEMUSER
+     - name: ACCOUNT
+     - name: ELOGIC_PRODUCTTYPE
+     - name: BUSINESSUNIT
+     - name: NTT_MEGCONSUMERJOURNEY
